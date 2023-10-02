@@ -113,14 +113,21 @@
 
         </TextView>
 
-        <androidx.fragment.app.FragmentContainerView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/fragment_container_view"
+        <fragment
+            android:id="@+id/writeSomething"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-        </androidx.fragment.app.FragmentContainerView>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Write Something..."
+                android:backgroundTint="@color/white">
+
+            </EditText>
+
+        </fragment>
 
     </LinearLayout>
 
