@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/titleFragmentTextScreenRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".textScreen">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/titleFragmentpoop"
+    <EditText
+        android:id="@+id/typeHere"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Write Something..."
+        android:backgroundTint="@color/white">
+
+    </EditText>
 
 </FrameLayout>
