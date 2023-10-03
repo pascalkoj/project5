@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.mlkit.common.model.DownloadConditions
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
 
 
         val viewModel = ViewModelProvider(this).get(TranslatorViewModel::class.java)

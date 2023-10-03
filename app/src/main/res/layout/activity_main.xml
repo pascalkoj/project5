@@ -11,6 +11,8 @@
     tools:context=".MainActivity">
 
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -115,10 +117,12 @@
         </TextView>
 
         <fragment
-            android:id="@+id/writeSomething"
+            android:name="com.example.project5.textScreen"
+            android:id="@+id/titleFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_text_screen">
 
             <EditText
                 android:id="@+id/typeHere"
@@ -134,6 +138,7 @@
     </LinearLayout>
 
 </FrameLayout>
+
 
 
 
