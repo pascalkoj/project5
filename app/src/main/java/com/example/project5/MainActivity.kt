@@ -11,87 +11,34 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.languageid.LanguageIdentification
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-
+import com.example.project5.MainActivity.TranslatorViewModel
+import com.example.project5.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    //val viewModel: TranslatorViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        val viewModel: TranslatorViewModel by viewModels()
+        //val viewModel: TranslatorViewModel by viewModels()
+        //val viewModel = ViewModelProvider(this)[TranslatorViewModel::class.java]
 
     }
-
-
-
 
 
     // output language code is something like TranslateLanguage.ENGLISH
-    /*fun TranslateWithAutomaticInputLang(text: String, outputLanguageCode: String) : String
-    {
-        var output = ""
-        val languageIdentifier = LanguageIdentification.getClient()
-        languageIdentifier.identifyLanguage(text)
-            .addOnSuccessListener { languageCode ->
-                if (languageCode == "und") {
-                    Log.i("INFO", "Can't identify language.")
-                } else {
-                    Log.i("INFO", "Language: $languageCode")
-                    output = TranslateWithLang(text, languageCode, outputLanguageCode)
-                }
-            }
-            .addOnFailureListener {
-                // Model couldn’t be loaded or other internal error.
-                // ...
-                Log.e("ERROR", "Failed to detect language of input string")
-            }
-        return output
-    }
-    // language codes are something like TranslateLanguage.ENGLISH
-    fun TranslateWithLang(text: String, inputLanguageCode: String, outputLanguageCode: String) : String
-    {
-        var output = ""
-        // Create an English-German translator:
-        val options = TranslatorOptions.Builder()
-            .setSourceLanguage(inputLanguageCode)
-            .setTargetLanguage(outputLanguageCode)
-            .build()
-        val translator = Translation.getClient(options)
-        var conditions = DownloadConditions.Builder()
-            .requireWifi()
-            .build()
-        translator.downloadModelIfNeeded(conditions)
-            .addOnSuccessListener {
-                // Model downloaded successfully. Okay to start translating.
-                // (Set a flag, unhide the translation UI, etc.)
-                translator.translate(text)
-                    .addOnSuccessListener { translatedText ->
-                        // Translation successful.
-                        println(translatedText)
-                        output = translatedText
-                    }
-                    .addOnFailureListener { exception ->
-                        // Error.
-                        // ...
-                        Log.e("ERROR",
-                            "Failed to translate: $text  from $inputLanguageCode to $outputLanguageCode"
-                        )
-                    }
-            }
-            .addOnFailureListener { exception ->
-                // Model couldn’t be downloaded or other internal error.
-                // ...
-                Log.e("ERROR", "Model $inputLanguageCode -> $outputLanguageCode couldn't be downloaded")
-            }
-        return output
-    }
-    */
 
 
     class TranslatorViewModel : ViewModel()

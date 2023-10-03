@@ -6,6 +6,18 @@ plugins {
 }
 
 android {
+
+
+    /*viewBinding{
+        enable = true
+    }*/
+
+    buildFeatures{
+        viewBinding = true
+    }
+
+
+
     namespace = "com.example.project5"
     compileSdk = 33
 
