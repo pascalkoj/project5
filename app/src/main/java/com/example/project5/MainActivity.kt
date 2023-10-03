@@ -32,8 +32,27 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        //val viewModel: TranslatorViewModel by viewModels()
-        //val viewModel = ViewModelProvider(this)[TranslatorViewModel::class.java]
+
+        val viewModel = ViewModelProvider(this).get(TranslatorViewModel::class.java)
+        viewModel.SetTextViews(binding.typeHere, binding.lookAt)
+
+        binding.sourceLanguge.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.sEnglish -> viewModel.SetLanguages(TranslateLanguage.ENGLISH, viewModel.outputLanguageOption)
+                R.id.sSpanish -> viewModel.SetLanguages(TranslateLanguage.SPANISH, viewModel.outputLanguageOption)
+                R.id.sGerman -> viewModel.SetLanguages(TranslateLanguage.GERMAN, viewModel.outputLanguageOption)
+            }
+            viewModel.DoTranslateWithTextViews()
+        }
+
+        binding.Translation.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.tEnglish -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.ENGLISH)
+                R.id.tSpanish -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.SPANISH)
+                R.id.tGerman -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.GERMAN)
+            }
+            viewModel.DoTranslateWithTextViews()
+        }
 
     }
 
