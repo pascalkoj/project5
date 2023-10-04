@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/titleFragmentTextScreenRoot"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".textScreen">
-
-    <!-- TODO: Update blank fragment layout -->
-    <EditText
-        android:id="@+id/typeHere"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/titleFragmentTextScreenRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@null"
-        android:backgroundTint="#AFAFAF"
-        android:focusableInTouchMode="true"
-        android:hint="Write something..."
-        android:imeOptions="actionDone"
-        android:inputType="text">
+        tools:context=".textScreen">
 
-    </EditText>
+        <!-- TODO: Update blank fragment layout -->
+        <EditText
+            android:id="@+id/typeHere"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:backgroundTint="#AFAFAF"
+            android:focusableInTouchMode="true"
+            android:hint="Write something..."
+            android:imeOptions="actionDone"
+            android:inputType="text">
 
-</FrameLayout>
+        </EditText>
+
+    </FrameLayout>
+</layout>

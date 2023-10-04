@@ -1,133 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
-    android:layout_margin="10dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_weight="3"
-    tools:context=".MainActivity">
-
-
-
-
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/root"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="3"
-        >
+        android:layout_weight="3"
+        tools:context=".MainActivity">
+
 
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="3"
+            >
 
 
-            <RadioGroup
-                android:id="@+id/sourceLanguge"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checkedButton="@id/sEnglish">
+                android:layout_weight="0"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Source Language:"
-                    android:textColor="#808080"
-                    android:textSize="18dp">
 
-                </TextView>
-
-                <RadioButton
-                    android:id="@+id/sEnglish"
+                <RadioGroup
+                    android:id="@+id/sourceLanguge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="English" />
+                    android:layout_weight="1"
+                    android:checkedButton="@id/sEnglish">
 
-                <RadioButton
-                    android:id="@+id/sSpanish"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Source Language:"
+                        android:textColor="#808080"
+                        android:textSize="18dp">
+
+                    </TextView>
+
+                    <RadioButton
+                        android:id="@+id/sEnglish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="English" />
+
+                    <RadioButton
+                        android:id="@+id/sSpanish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Spanish" />
+
+                    <RadioButton
+                        android:id="@+id/sGerman"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="German" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/Translation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Spanish" />
+                    android:layout_weight="1"
+                    android:checkedButton="@id/tSpanish">
 
-                <RadioButton
-                    android:id="@+id/sGerman"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="German" />
-            </RadioGroup>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Translation:"
+                        android:textColor="#808080"
+                        android:textSize="18dp">
 
-            <RadioGroup
-                android:id="@+id/Translation"
+                    </TextView>
+
+                    <RadioButton
+                        android:id="@+id/tSpanish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Spanish" />
+
+                    <RadioButton
+                        android:id="@+id/tGerman"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="German" />
+
+                    <RadioButton
+                        android:id="@+id/tEnglish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="English" />
+
+                </RadioGroup>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lookAt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checkedButton="@id/tSpanish">
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:text="Translation"
+                android:textSize="20dp"
+                android:textColor="@color/black">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Translation:"
-                    android:textColor="#808080"
-                    android:textSize="18dp">
+            </TextView>
 
-                </TextView>
-
-                <RadioButton
-                    android:id="@+id/tSpanish"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Spanish" />
-
-                <RadioButton
-                    android:id="@+id/tGerman"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="German" />
-
-                <RadioButton
-                    android:id="@+id/tEnglish"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="English" />
-
-            </RadioGroup>
-
+            <fragment
+                android:name="com.example.project5.textScreen"
+                android:id="@+id/titleFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                tools:layout="@layout/fragment_text_screen">
+            </fragment>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/lookAt"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:text="Translation"
-            android:textColor="#808080">
+    </FrameLayout>
 
-        </TextView>
-
-        <fragment
-            android:name="com.example.project5.textScreen"
-            android:id="@+id/titleFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            tools:layout="@layout/fragment_text_screen">
-        </fragment>
-
-    </LinearLayout>
-
-</FrameLayout>
+</layout>
 
 
 

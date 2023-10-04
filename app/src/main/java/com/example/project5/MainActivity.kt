@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +23,7 @@ import com.google.mlkit.nl.languageid.LanguageIdentification
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-import com.example.project5.MainActivity.TranslatorViewModel
+import com.example.project5.TranslatorViewModel
 import com.example.project5.databinding.ActivityMainBinding
 import com.example.project5.databinding.FragmentTextScreenBinding
 import com.google.mlkit.common.model.RemoteModelManager
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var bindingFrag: FragmentTextScreenBinding
-    //val viewModel: TranslatorViewModel by viewModels()
+    private lateinit var viewModel: TranslatorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,135 +42,82 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val viewModel = ViewModelProvider(this).get(TranslatorViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(TranslatorViewModel::class.java)
         val lookatview = binding.lookAt
         var edittextview: EditText = bindingFrag.typeHere
 
-        // -------------------- for testing
-        edittextview.setOnClickListener {
-            val translated_str = viewModel.DoTranslateWithTextViews(edittextview.text.toString())
-            lookatview.setText(translated_str)
-        }
-        lookatview.setOnClickListener {
-            val translated_str = viewModel.DoTranslateWithTextViews(edittextview.text.toString())
-            lookatview.setText(translated_str)
-        }
-        // ----------------
-
         binding.sourceLanguge.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.sEnglish -> viewModel.SetLanguages(TranslateLanguage.ENGLISH, viewModel.outputLanguageOption)
-                R.id.sSpanish -> viewModel.SetLanguages(TranslateLanguage.SPANISH, viewModel.outputLanguageOption)
-                R.id.sGerman -> viewModel.SetLanguages(TranslateLanguage.GERMAN, viewModel.outputLanguageOption)
+                R.id.sEnglish -> viewModel.SetLanguages(
+                    TranslateLanguage.ENGLISH,
+                    viewModel.outputLanguageOption
+                )
+
+                R.id.sSpanish -> viewModel.SetLanguages(
+                    TranslateLanguage.SPANISH,
+                    viewModel.outputLanguageOption
+                )
+
+                R.id.sGerman -> viewModel.SetLanguages(
+                    TranslateLanguage.GERMAN,
+                    viewModel.outputLanguageOption
+                )
             }
 
-            var input_text = edittextview.getText().toString()
-            var other_input_maybe = viewModel.currentStr.value
-            println(input_text)
-            println(other_input_maybe)
-            val translated_str = viewModel.DoTranslateWithTextViews(input_text)
-            lookatview.setText(translated_str)
+
         }
 
         binding.Translation.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.tEnglish -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.ENGLISH)
-                R.id.tSpanish -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.SPANISH)
-                R.id.tGerman -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.GERMAN)
+                R.id.tEnglish -> viewModel.SetLanguages(
+                    viewModel.inputLanguageOption,
+                    TranslateLanguage.ENGLISH
+                )
+
+                R.id.tSpanish -> viewModel.SetLanguages(
+                    viewModel.inputLanguageOption,
+                    TranslateLanguage.SPANISH
+                )
+
+                R.id.tGerman -> viewModel.SetLanguages(
+                    viewModel.inputLanguageOption,
+                    TranslateLanguage.GERMAN
+                )
             }
 
-            var input_text = edittextview.getText().toString()
-            var other_input_maybe = viewModel.currentStr.value
-            println(input_text)
-            println(other_input_maybe)
-            val translated_str = viewModel.DoTranslateWithTextViews(input_text)
-            lookatview.setText(translated_str)
-
-        }
-
-    }
-
-
-    // output language code is something like TranslateLanguage.ENGLISH
-
-
-    class TranslatorViewModel : ViewModel()
-    {
-        var inputLanguageOption = TranslateLanguage.ENGLISH
-        var outputLanguageOption = TranslateLanguage.GERMAN
-
-        // Create a LiveData with a String
-        val currentStr: MutableLiveData<String> by lazy {
-            MutableLiveData<String>()
         }
 
 
-        // call when user changes languages option
-        fun SetLanguages(inputLanguageCode: String, outputLanguageCode: String)
-        {
-            this.inputLanguageOption = inputLanguageCode
-            this.outputLanguageOption = outputLanguageCode
-        }
-
-        fun DoTranslateWithTextViews(input_str: String) : String
-        {
-            var translated_str = ""
-            if (inputLanguageOption == "")
-            {
-                translated_str = TranslateWithAutomaticInputLang(input_str, outputLanguageOption)
-            }
-            else
-            {
-                translated_str = TranslateWithLang(input_str, inputLanguageOption, outputLanguageOption)
-            }
-            currentStr.postValue(translated_str)
-            return translated_str
-        }
-
-        // output language code is something like TranslateLanguage.ENGLISH
-        fun TranslateWithAutomaticInputLang(text: String, outputLanguageCode: String) : String
-        {
-            var output = ""
-            val languageIdentifier = LanguageIdentification.getClient()
-            var task = languageIdentifier.identifyLanguage(text)
-                .addOnSuccessListener { languageCode ->
-                    // we've automatically detected the input language
-                    if (languageCode == "und") {
-                        Log.i("INFO", "Can't identify language.")
-                    } else {
-                        Log.i("INFO", "Language: $languageCode")
-                        // translate input to output lang
-                        output = TranslateWithLang(text, languageCode, outputLanguageCode)
-                    }
+        viewModel.bindingFrag.observe(this) { bindingFrag ->
+            viewModel.bindingFrag.value?.typeHere?.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(mEdit: Editable) {
+                    Log.i("INFO", "Hello")
                 }
-                .addOnFailureListener {
-                    // Model couldn’t be loaded or other internal error.
-                    // ...
-                    Log.e("ERROR", "Failed to detect language of input string")
+
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
-            while (!task.isComplete) {}
-            return task.result
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    val current_text = s.toString()
+                    println("After text changed callback")
+                    println(current_text)
+
+                    viewModel.currentStr.value = current_text
+
+                    val translated_str = viewModel.DoTranslateWithTextViews(current_text)
+                    binding.lookAt.setText(translated_str)
+                }
+            })
         }
 
-        // language codes are something like TranslateLanguage.ENGLISH
-        fun TranslateWithLang(text: String, inputLanguageCode: String, outputLanguageCode: String) : String
-        {
-            var output = ""
-            // Create an English-German translator:
-            val options = TranslatorOptions.Builder()
-                .setSourceLanguage(inputLanguageCode)
-                .setTargetLanguage(outputLanguageCode)
-                .build()
-            val translator = Translation.getClient(options)
-            var conditions = DownloadConditions.Builder()
-                .requireWifi()
-                .build()
-            var task = translator.downloadModelIfNeeded(conditions)
-            while (!task.isComplete){ }
-            var task2 = translator.translate(text)
-            while (!task2.isComplete){ }
-            return task2.result
-        }
 
     }
 }
+
+
+// output language code is something like TranslateLanguage.ENGLISH

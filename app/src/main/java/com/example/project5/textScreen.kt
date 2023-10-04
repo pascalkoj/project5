@@ -4,6 +4,7 @@ import android.R.attr.text
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,17 +31,11 @@ class textScreen : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentTextScreenBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var viewModel: TranslatorViewModel
 
 
-
-        binding = FragmentTextScreenBinding.inflate(layoutInflater)
+    /*
+binding = FragmentTextScreenBinding.inflate(layoutInflater)
         val view = binding.root
         val viewModel = ViewModelProvider(this).get(MainActivity.TranslatorViewModel::class.java)
 
@@ -57,15 +52,18 @@ class textScreen : Fragment() {
             println(binding.typeHere.getText().toString())
         }
 
-        edittext.addTextChangedListener(object : TextWatcher {
+        binding.typeHere.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(mEdit: Editable) {
-                val current_text = mEdit.toString()
-                println("After text changed callback")
-                println(current_text)
-                viewModel.currentStr.value = (current_text)
+                Log.i("INFO", "Hello")
             }
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                val current_text = s.toString()
+                println("After text changed callback")
+                println(current_text)
+
+                viewModel.currentStr.value = (current_text)
+            }
         })
 
         edittext.setOnEditorActionListener{v, actionId, event ->
@@ -77,44 +75,18 @@ class textScreen : Fragment() {
                 else -> false
             }}
 
-    }
+ */
 
-    override fun onResume() {
-        super.onResume()
-
-        binding = FragmentTextScreenBinding.inflate(layoutInflater)
-        val view = binding.root
-        val viewModel = ViewModelProvider(this).get(MainActivity.TranslatorViewModel::class.java)
-
-        val edittext: EditText = binding.typeHere
-        println(edittext.text.toString())
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_text_screen, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment textScreen.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            textScreen().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        val binding = FragmentTextScreenBinding.inflate(inflater, container, false)
+        viewModel =
+            ViewModelProvider(requireActivity()).get(TranslatorViewModel::class.java)
+        viewModel.bindingFrag.value = binding
+        return binding.root
     }
 }
