@@ -25,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight="0"
             android:orientation="horizontal">
 
 
@@ -110,7 +110,7 @@
             android:id="@+id/lookAt"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.2"
+            android:layout_weight="1.5"
             android:text="Translation"
             android:textColor="#808080">
 
@@ -121,7 +121,7 @@
             android:id="@+id/titleFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             tools:layout="@layout/fragment_text_screen">
         </fragment>
 

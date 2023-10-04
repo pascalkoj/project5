@@ -1,6 +1,7 @@
 package com.example.project5
 
 import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
@@ -12,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.mlkit.common.model.DownloadConditions
@@ -39,39 +41,47 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         val viewModel = ViewModelProvider(this).get(TranslatorViewModel::class.java)
-        //viewModel.SetOutputText(binding.lookAt)
         val lookatview = binding.lookAt
-        val edittextview = bindingFrag.typeHere
+        var edittextview: EditText = bindingFrag.typeHere
 
-
+        // -------------------- for testing
         edittextview.setOnClickListener {
             val translated_str = viewModel.DoTranslateWithTextViews(edittextview.text.toString())
             lookatview.setText(translated_str)
         }
+        lookatview.setOnClickListener {
+            val translated_str = viewModel.DoTranslateWithTextViews(edittextview.text.toString())
+            lookatview.setText(translated_str)
+        }
+        // ----------------
 
         binding.sourceLanguge.setOnCheckedChangeListener { group, checkedId ->
-            val viewModel = ViewModelProvider(this).get(TranslatorViewModel::class.java)
-
             when (checkedId) {
                 R.id.sEnglish -> viewModel.SetLanguages(TranslateLanguage.ENGLISH, viewModel.outputLanguageOption)
                 R.id.sSpanish -> viewModel.SetLanguages(TranslateLanguage.SPANISH, viewModel.outputLanguageOption)
                 R.id.sGerman -> viewModel.SetLanguages(TranslateLanguage.GERMAN, viewModel.outputLanguageOption)
             }
 
-            val translated_str = viewModel.DoTranslateWithTextViews(edittextview.text.toString())
+            var input_text = edittextview.getText().toString()
+            var other_input_maybe = viewModel.currentStr.value
+            println(input_text)
+            println(other_input_maybe)
+            val translated_str = viewModel.DoTranslateWithTextViews(input_text)
             lookatview.setText(translated_str)
         }
 
         binding.Translation.setOnCheckedChangeListener { group, checkedId ->
-            val viewModel = ViewModelProvider(this).get(TranslatorViewModel::class.java)
-
             when (checkedId) {
                 R.id.tEnglish -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.ENGLISH)
                 R.id.tSpanish -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.SPANISH)
                 R.id.tGerman -> viewModel.SetLanguages(viewModel.inputLanguageOption, TranslateLanguage.GERMAN)
             }
 
-            val translated_str = viewModel.DoTranslateWithTextViews(edittextview.text.toString())
+            var input_text = edittextview.getText().toString()
+            var other_input_maybe = viewModel.currentStr.value
+            println(input_text)
+            println(other_input_maybe)
+            val translated_str = viewModel.DoTranslateWithTextViews(input_text)
             lookatview.setText(translated_str)
 
         }
@@ -86,6 +96,12 @@ class MainActivity : AppCompatActivity() {
     {
         var inputLanguageOption = TranslateLanguage.ENGLISH
         var outputLanguageOption = TranslateLanguage.GERMAN
+
+        // Create a LiveData with a String
+        val currentStr: MutableLiveData<String> by lazy {
+            MutableLiveData<String>()
+        }
+
 
         // call when user changes languages option
         fun SetLanguages(inputLanguageCode: String, outputLanguageCode: String)
@@ -105,6 +121,7 @@ class MainActivity : AppCompatActivity() {
             {
                 translated_str = TranslateWithLang(input_str, inputLanguageOption, outputLanguageOption)
             }
+            currentStr.postValue(translated_str)
             return translated_str
         }
 
@@ -113,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         {
             var output = ""
             val languageIdentifier = LanguageIdentification.getClient()
-            languageIdentifier.identifyLanguage(text)
+            var task = languageIdentifier.identifyLanguage(text)
                 .addOnSuccessListener { languageCode ->
                     // we've automatically detected the input language
                     if (languageCode == "und") {
@@ -129,7 +146,8 @@ class MainActivity : AppCompatActivity() {
                     // ...
                     Log.e("ERROR", "Failed to detect language of input string")
                 }
-            return output
+            while (!task.isComplete) {}
+            return task.result
         }
 
         // language codes are something like TranslateLanguage.ENGLISH
@@ -146,11 +164,9 @@ class MainActivity : AppCompatActivity() {
                 .requireWifi()
                 .build()
             var task = translator.downloadModelIfNeeded(conditions)
-            while (!task.isComplete)
-            { }
+            while (!task.isComplete){ }
             var task2 = translator.translate(text)
-            while (!task2.isComplete)
-            { }
+            while (!task2.isComplete){ }
             return task2.result
         }
 

@@ -1,13 +1,18 @@
 package com.example.project5
 
+import android.R.attr.text
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.project5.databinding.ActivityMainBinding
 import com.example.project5.databinding.FragmentTextScreenBinding
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,10 +37,57 @@ class textScreen : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
+
         binding = FragmentTextScreenBinding.inflate(layoutInflater)
         val view = binding.root
         val viewModel = ViewModelProvider(this).get(MainActivity.TranslatorViewModel::class.java)
 
+        // none of these are ever called...
+
+        val edittext: EditText = binding.typeHere
+        edittext.setOnClickListener {
+            println("Clicked edittext")
+            println(binding.typeHere.getText().toString())
+        }
+        val root = binding.titleFragmentTextScreenRoot
+        root.setOnClickListener {
+            println("Clicked frag root")
+            println(binding.typeHere.getText().toString())
+        }
+
+        edittext.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(mEdit: Editable) {
+                val current_text = mEdit.toString()
+                println("After text changed callback")
+                println(current_text)
+                viewModel.currentStr.value = (current_text)
+            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        })
+
+        edittext.setOnEditorActionListener{v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    println("setOnEditorActionListener edittext")
+                    true
+                }
+                else -> false
+            }}
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding = FragmentTextScreenBinding.inflate(layoutInflater)
+        val view = binding.root
+        val viewModel = ViewModelProvider(this).get(MainActivity.TranslatorViewModel::class.java)
+
+        val edittext: EditText = binding.typeHere
+        println(edittext.text.toString())
     }
 
     override fun onCreateView(

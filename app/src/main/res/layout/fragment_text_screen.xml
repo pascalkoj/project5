@@ -11,8 +11,12 @@
         android:id="@+id/typeHere"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Write Something..."
-        android:backgroundTint="@color/white">
+        android:background="@null"
+        android:backgroundTint="#AFAFAF"
+        android:focusableInTouchMode="true"
+        android:hint="Write something..."
+        android:imeOptions="actionDone"
+        android:inputType="text">
 
     </EditText>
 
