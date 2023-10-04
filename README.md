@@ -20,6 +20,8 @@ The following **extensions** are implemented:
 ## Video Walkthrough
 
 
+https://github.com/pascalkoj/project5/assets/104457751/f9570acb-a92b-4500-99e4-53231f31b079
+
 
 Here's a walkthrough of implemented user stories:
 
